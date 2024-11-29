@@ -20,7 +20,7 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
 // Armazena a data do último encontro
-let lastSeen = localStorage.getItem('lastSeen') ? new Date(localStorage.getItem('lastSeen')) : new Date();
+let lastSeen = new Date();
 let cardsData = [];
 
 // Função para atualizar o contador
@@ -32,26 +32,20 @@ function updateCounter() {
     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-    document.getElementById('counter').textContent = `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
-}
-
-// Função para resetar o contador
-function resetCounter() {
-    const currentDate = new Date();
-    localStorage.setItem('lastSeen', currentDate);
-    lastSeen = currentDate;
-    updateCounter();
+    document.getElementById('dias').textContent = `${days} dias`;
+    document.getElementById('horas').textContent = `${hours} horas`;
+    document.getElementById('minutos').textContent = `${minutes} minutos`;
+    document.getElementById('segundos').textContent = `${seconds} segundos`;
 }
 
 // Exibe os cards de diário
 function displayCards() {
     const container = document.getElementById('cards-container');
-    container.innerHTML = '';
+    container.innerHTML = ''; // Limpa o container antes de adicionar novos cards
     cardsData.forEach((card) => {
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
         cardDiv.innerHTML = `
-            <span class="close-card" onclick="deleteCard('${card.id}')">&times;</span>
             <h2>${card.title}</h2>
         `;
         cardDiv.onclick = () => openModal(card);
@@ -74,26 +68,40 @@ async function addNewCard() {
 }
 
 // Função para abrir o modal
-function openModal(card) {
+function openModal (card) {
     document.getElementById('modal-title').textContent = card.title;
     document.getElementById('modal-content').textContent = card.content;
+    document.getElementById('modal-delete-button').style.display = 'block'; // Exibe o botão de deletar
+    document.getElementById('modal-delete-button').onclick = () => deleteCard(card.id); // Define a ação do botão de deletar
     document.getElementById('modal').style.display = 'flex';
 }
 
 // Função para fechar o modal
 function closeModal() {
     document.getElementById('modal').style.display = 'none';
+    document.getElementById('modal-delete-button').style.display = 'none'; // Oculta o botão de deletar ao fechar o modal
 }
 
 // Função para deletar um card
 async function deleteCard(id) {
     try {
         await deleteDoc(doc(db, "diaries", id)); // Deleta o card do Firestore
-        // Atualiza a lista local de cards
         cardsData = cardsData.filter(card => card.id !== id); // Remove o card deletado do array local
         displayCards(); // Atualiza a exibição dos cards
+        closeModal(); // Fecha o modal após a exclusão
     } catch (error) {
- console.error("Erro ao deletar o card: ", error); // Exibe o erro no console
+        console.error("Erro ao deletar o card: ", error); // Exibe o erro no console
+    }
+}
+
+function openImageModal(imageUrl) {
+    const modalImage = document.getElementById('modal-image');
+    modalImage.src = imageUrl; // Define a imagem do modal
+    document.getElementById('image-modal').style.display = 'flex'; // Exibe o modal
+}
+
+function closeImageModal() {
+    document.getElementById('image-modal').style.display = 'none'; // Fecha o modal
 }
 
 // Torna as funções acessíveis globalmente
@@ -117,3 +125,19 @@ onSnapshot(q, (querySnapshot) => {
 
 // Chama a função para exibir os cards ao carregar a página
 displayCards();
+
+function displayCards() {
+    const container = document.getElementById('cards-container');
+    container.innerHTML = '';
+    cardsData.forEach((card) => {
+        const cardDiv = document.createElement('div');
+        cardDiv.classList.add('card');
+        cardDiv.innerHTML = `
+            <h2>${card.title}</h2>
+            <img src="${card.imageUrl}" alt="${card.title}" onclick="openImageModal('${card.imageUrl}')"> <!-- Adiciona o evento onclick -->
+            <p>${card.content}</p>
+        `;
+        cardDiv.onclick = () => openModal(card);
+        container.appendChild(cardDiv);
+    });
+}
