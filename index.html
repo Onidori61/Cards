@@ -166,10 +166,12 @@
             <h1>Diário a Dois</h1>
         </header>
 
-        <!-- Área dos cards -->
-        <div class="gallery" id="cards-container">
-            <!-- Os cards serão inseridos aqui dinamicamente -->
-        </div>
+       <!-- Área dos cards -->
+     <div class="carousel" id="cards-container">
+          <div class="carousel-inner">
+         <!-- Os cards serão inseridos aqui dinamicamente -->
+         </div>
+     </div>
 
         <!-- Botão de adicionar novo card -->
         <button class="btn add-card" onclick="addNewCard()">+</button>
@@ -195,16 +197,6 @@
                 <button id="modal-delete-button" class="btn-delete" style="display: none;">🗑️</ button> <!-- Botão de deletar -->
             </div>
         </div>
-    </div>
-
-       <!-- Modal para mostrar o conteúdo do diário -->
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h3 id="modal-title"></h3>
-        <p id="modal-content"></p>
-    
-        <button id="modal-delete-button" class="btn-delete" style="display: none;">🗑️</button> <!-- Botão de deletar -->
     </div>
 </div>
 </body>

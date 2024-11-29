@@ -56,24 +56,33 @@ input[type="file"] {
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
 }
 
-.image-preview {
-  width: 100px; /* Largura do retângulo */
-  height: 50px; /* Altura do retângulo */
-  border-radius: 10px; /* Bordas arredondadas */
-  overflow: hidden; /* Esconde a parte da imagem que excede o retângulo */
-  margin-top: 10px; /* Espaço acima da pré-visualização */
+.carousel {
+  display: flex; /* Exibe os filhos em linha */
+  overflow-x: auto; /* Permite rolagem horizontal */
+  scroll-snap-type: x mandatory; /* Para rolagem suave */
 }
 
-.image-preview img {
-  width: 100%; /* Faz a imagem ocupar 100% da largura do retângulo */
-  height: auto; /* Mantém a proporção da imagem */
-  cursor: pointer; /* Muda o cursor ao passar sobre a imagem */
+.carousel-inner {
+  display: flex; /* Mantém os cards em linha */
+  flex-wrap: nowrap; /* Impede que os cards quebrem para a próxima linha */
+}
+
+
+.card {
+  flex: 0 0 auto; /* Impede que os cards encolham e garante que cada um tenha largura fixa */
+  width: 250px; /* Largura fixa para os cards */
+  height: 250px; /* Altura fixa para os cards */
+  scroll-snap-align: start; /* Alinha os cards ao início do contêiner ao rolar */
+  /* Outros estilos do card */
 }
 
 /* Cards quadrados */
 .card {
-  width: 250px; /* Largura fixa */
-  height: 250px; /* Altura fixa para tornar o card quadrado */
+  flex: 0 0 auto; /* Impede que os cards encolham e garante que cada um tenha largura fixa */
+  width: 250px; /* Largura fixa para os cards */
+  height: 250px; /* Altura fixa para os cards */
+  margin-right: 20px; /* Espaçamento à direita entre os cards */
+  scroll-snap-align: start; /* Alinha os cards ao início do contêiner ao rolar */
   background-color: #444; /* Cor de fundo escura para os cards */
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
@@ -88,16 +97,25 @@ input[type="file"] {
   text-align: center;
 }
 
+.card:last-child {
+  margin-right: 0; /* Remove a margem do último card */
+}
+
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
 }
 
 .card h2 {
-  font-size: 18px;
-  color: #ff4081; /* Rosa vibrante para o título dos cards */
-  font-weight: bold;
-  margin-top: 10px;
+    font-size: 18px;
+    color: #ff4081; /* Rosa vibrante para o título dos cards */
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
 }
 
 /* Botão de adicionar card */
@@ -182,22 +200,6 @@ input[type="file"] {
   justify-content: center; /* Centraliza horizontalmente */
   z-index: 999; /* Coloca o modal acima de outros elementos */
   overflow: auto; /* Permite rolagem se o conteúdo exceder o tamanho do modal */
-}
-
-/* Estilo para a pré-visualização da imagem */
-.image-preview {
-  display: flex; /* Usar flexbox para centralizar */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-  width: 100%; /* Largura total do contêiner */
-  margin-top: 10px; /* Espaço acima da pré-visualização */
-}
-
-.image-preview img {
-  width: 100px; /* Largura do retângulo */
-  height: 50px; /* Altura do retângulo */
-  border-radius: 10px; /* Bordas arredondadas */
-  cursor: pointer; /* Muda o cursor ao passar sobre a imagem */
 }
 
 /* Estilo do modal */

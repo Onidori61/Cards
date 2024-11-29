@@ -40,15 +40,13 @@ function updateCounter() {
 
 // Exibe os cards de diário
 function displayCards() {
-    const container = document.getElementById('cards-container');
+    const container = document.querySelector('.carousel-inner');
     container.innerHTML = ''; // Limpa o container antes de adicionar novos cards
     cardsData.forEach((card) => {
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
         cardDiv.innerHTML = `
             <h2>${card.title}</h2>
-            <p>${card.content}</p>
-            ${card.imageUrl ? `<img src="${card.imageUrl}" alt="${card.title}" onclick="openImageModal('${card.imageUrl}')" style="width: 100px; height: auto; border-radius: 10px; cursor: pointer;" />` : ''}
         `;
         cardDiv.onclick = () => openModal(card);
         container.appendChild(cardDiv);
@@ -165,4 +163,24 @@ function handleImageUpload(event) {
         };
         reader.readAsDataURL(file); // Lê o arquivo como URL de dados
     }
+}
+
+let currentIndex = 0;
+
+function moveCarousel(direction) {
+    const inner = document.querySelector('.carousel-inner');
+    const totalCards = cardsData.length;
+
+    currentIndex += direction;
+
+    // Impede que o índice saia do intervalo
+    if (currentIndex < 0) {
+        currentIndex = totalCards - 1; // Volta para o último card
+    } else if (currentIndex >= totalCards) {
+        currentIndex = 0; // Volta para o primeiro card
+    }
+
+    // Move o carrossel
+    const offset = -currentIndex * 250; // 250 é a largura do card
+    inner.style.transform = `translateX(${offset}px)`;
 }
