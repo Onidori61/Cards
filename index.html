@@ -9,7 +9,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, orderBy, query } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, orderBy, query, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -27,8 +27,7 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-        // Armazena a data do último encontro
-        let lastSeen = localStorage.getItem('lastSeen') ? new Date(localStorage.getItem('lastSeen')) : new Date();
+        let lastSeen = new Date();
         let cardsData = [];
 
         // Função para atualizar o contador
@@ -44,11 +43,22 @@
         }
 
         // Função para resetar o contador e adicionar o encontro
-        function resetCounter() {
+        async function resetCounter() {
             const currentDate = new Date();
-            localStorage.setItem('lastSeen', currentDate);
             lastSeen = currentDate;
+            await setDoc(doc(db, "lastSeen", "counter"), { lastSeen: currentDate });
             updateCounter();
+        }
+
+        // Função para buscar a data do último encontro
+        async function fetchLastSeen() {
+            const docRef = doc(db, "lastSeen", "counter");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                lastSeen = docSnap.data().lastSeen.toDate(); // Converte para objeto Date
+            } else {
+                console.log("No such document!");
+            }
         }
 
         // Exibe os cards de diário
@@ -60,7 +70,7 @@
                 cardDiv.classList.add('card');
                 cardDiv.innerHTML = `
                     <span class="close-card" onclick="deleteCard('${card.id}')">&times;</span>
-                    <h2>${card.title}</h2>
+ <h2>${card.title}</h2>
                 `;
                 cardDiv.onclick = () => openModal(card);
                 container.appendChild(cardDiv);
@@ -71,7 +81,7 @@
         async function addNewCard() {
             console.log("addNewCard called"); // Diagnóstico
             const title = prompt("Qual o título da sua entrada?");
-            const content = prompt("Escreva o conteúdo do diário ");
+            const content = prompt("Escreva o conteúdo do diário");
 
             if (title && content) {
                 const newCard = { title, content, createdAt: new Date() };
@@ -134,6 +144,9 @@
 
         // Chama a função para exibir os cards ao carregar a página
         displayCards();
+
+        // Busca a data do último encontro ao carregar a página
+        fetchLastSeen();
     </script>
 </head>
 <body>
@@ -153,7 +166,7 @@
         <!-- Contador de quanto tempo sem se ver -->
         <div class="counter-section">
             <p class="counter">A gente não se vê há:</p>
-            <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
+ <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
             <button class="btn reset-counter" onclick="resetCounter()">Resetar Contador</button>
         </div>
     </div>
