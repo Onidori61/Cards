@@ -49,16 +49,19 @@
         }
 
         // Função para atualizar o contador
-        function updateCounter() {
-            const now = new Date();
-            const timeDiff = now - lastSeen;
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+     function updateCounter() {
+     const now = new Date();
+     const timeDiff = now - lastSeen;
+     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+     const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-            document.getElementById('counter').textContent = `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
-        }
+     document.getElementById('dias').textContent = `${days} dias`;
+     document.getElementById('horas').textContent = `${hours} horas`;
+     document.getElementById('minutos').textContent = `${minutes} minutos`;
+     document.getElementById('segundos').textContent = `${seconds} segundos`;
+}
 
         // Função para resetar o contador e adicionar o encontro
         async function resetCounter() {
@@ -90,7 +93,7 @@
             const content = prompt("Escreva o conteúdo do diário:");
 
             if (title && content) {
-                const newCard = { title, content, createdAt: new Date() };
+                const newCard = { title, content, createdAt: new Date() }; // Adiciona a data de criação
                 const existingCard = cardsData.find(card => card.title === title && card.content === content);
                 if (!existingCard) {
                     const docRef = await addDoc(collection(db, "diaries"), newCard);
@@ -169,12 +172,16 @@
         <button class="btn add-card" onclick="addNewCard()">+</button>
 
         <!-- Contador de quanto tempo sem se ver -->
-        <div class="counter-section">
-            <p class="counter">A gente não se vê há:</p>
-            <p class="time" id="counter">00 dias, 00 horas, 00 minutos, 00 segundos</p>
-            <button class="btn reset-counter" onclick="resetCounter()">Resetar Contador</button>
-        </div>
+<div class="counter-section">
+    <p class="counter">A gente não se vê há:</p>
+    <div class="time-together">
+        <div class="time-box" id="dias">0 dias</div>
+        <div class="time-box" id="horas">0 horas</div>
+        <div class="time-box" id="minutos">0 minutos</div>
+        <div class="time-box" id="segundos">0 segundos</div>
     </div>
+    <button class="btn reset-counter" onclick="resetCounter()">⧖</button>
+</div>
 
     <!-- Modal para mostrar o conteúdo do diário -->
     <div class="modal" id="modal">

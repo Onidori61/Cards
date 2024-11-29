@@ -1,11 +1,3 @@
-/* Pode me ajudar? Não sei programar 
- e queria criar um site para minha namorada,
- uma surpresa. Bom, a ideia é criarmos cards (diários) 
- para registrar e refletir sobre os momentos vividos juntos,
-  ao mesmo tempo que oferece uma maneira prática de ver
- o tempo que passou desde o último encontro
- Aliás, o código fica em repositórios do github e fica online pelo vercel*/
-
 /* Reset básico */
 * {
   margin: 0;
@@ -28,8 +20,7 @@ body {
 .container {
   width: 95%;
   max-width: 1200px;
-  margin: 0 auto;
-  background-color: #333; /* Fundo escuro para o container */
+  margin: 0 auto background-color: #333; /* Fundo escuro para o container */
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   padding: 20px;
@@ -43,7 +34,7 @@ header {
 
 h1 {
   font-size: 40px;
-  color: #9b4d96; /* Roxo escuro para o título */
+  color: #ff4081; /* Rosa vibrante para o título */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   font-family: 'Georgia', serif;
 }
@@ -80,7 +71,7 @@ h1 {
 
 .card h2 {
   font-size: 18px;
-  color: #9b4d96; /* Roxo escuro para o título dos cards */
+  color: #ff4081; /* Rosa vibrante para o título dos cards */
   font-weight: bold;
   margin-top: 10px;
 }
@@ -89,9 +80,9 @@ h1 {
 .btn.add-card {
   width: 50px; /* Largura igual aos cards */
   height: 50px; /* Altura igual aos cards */
-  background-color: rgba(155, 77, 150, 0.3); /* Cor roxa transparente */
-  border: 2px dashed #9b4d96; /* Borda pontilhada para se assemelhar a um card */
-  color: #9b4d96;
+  background-color: rgba(255, 20, 147, 0.3); /* Cor rosa transparente */
+  border: 2px dashed #ff4081; /* Borda pontilhada para se assemelhar a um card */
+  color: #ff4081;
   font-size: 2rem;
   position: fixed;
   bottom: 30px;
@@ -106,24 +97,35 @@ h1 {
 }
 
 .btn.add-card:hover {
-  background-color: rgba(155, 77, 150, 0.5); /* Aumenta a opacidade no hover */
+  background-color: rgba(255, 20, 147, 0.5); /* Aumenta a opacidade no hover */
 }
 
 /* Botão de resetar contador */
 .btn.reset-counter {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #9b4d96; /* Cor do botão */
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  position: fixed; /* Fixa o botão na tela */
+  bottom: 30px; /* Distância do fundo */
+  left: 30px; /* Distância da esquerda */
+  width: 50px; /* Largura do botão */
+  height: 50px; /* Altura do botão */
+  background-color: #ff4081; /* Cor do botão */
+  border: none; /* Remove a borda padrão */
+  color: #fff; /* Cor do texto */
+  font-size: 1.5rem; /* Tamanho do texto */
+  border-radius: 50%; /* Faz o botão ser circular */
+  display: flex; /* Flexbox para centralizar o conteúdo */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra do botão */
+  cursor: pointer; /* Muda o cursor ao passar o mouse */
+  transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
 }
 
 .btn.reset-counter:hover {
-  background-color: #7a3b7c; /* Cor do botão ao passar o mouse */
+  background-color: #ff0080; /* Cor do botão ao passar o mouse */
+}
+
+.btn.reset-counter:hover {
+  background-color: #ff0080; /* Cor do botão ao passar o mouse */
 }
 
 /* Contador */
@@ -185,7 +187,7 @@ h1 {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #9b4d96; /* Cor do "X" */
+  color: #ff4081; /* Cor do "X" */
   font-size: 20px;
   cursor: pointer;
   transition: color 0.3s ease;
