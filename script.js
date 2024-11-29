@@ -47,6 +47,8 @@ function displayCards() {
         cardDiv.classList.add('card');
         cardDiv.innerHTML = `
             <h2>${card.title}</h2>
+            <p>${card.content}</p>
+            ${card.imageUrl ? `<img src="${card.imageUrl}" alt="${card.title}" onclick="openImageModal('${card.imageUrl}')" style="width: 100px; height: auto; border-radius: 10px; cursor: pointer;" />` : ''}
         `;
         cardDiv.onclick = () => openModal(card);
         container.appendChild(cardDiv);
@@ -57,13 +59,21 @@ function displayCards() {
 async function addNewCard() {
     const title = prompt("Qual o título da sua entrada?");
     const content = prompt("Escreva o conteúdo do diário:");
+    
+    // Adiciona a URL da imagem, se houver
+    const imageUrl = document.getElementById('modal-image').src; // Obtém a URL da imagem
 
     if (title && content) {
-        const newCard = { title, content, createdAt: new Date() }; // Adiciona a data de criação
-        const docRef = await addDoc(collection(db, "diaries"), newCard); // Adiciona ao Firestore
-        newCard.id = docRef.id; // Armazena o ID do documento
-        cardsData.push(newCard); // Adiciona o card ao array local
-        displayCards(); // Atualiza a exibição dos cards
+        const newCard = { title, content, imageUrl, createdAt: new Date() }; // Inclui a URL da imagem
+        const existingCard = cardsData.find(card => card.title === title && card.content === content);
+        if (!existingCard) {
+            const docRef = await addDoc(collection(db, "diaries"), newCard);
+            newCard.id = docRef.id; // Armazena o ID do documento
+            cardsData.push(newCard);
+            displayCards(); // Atualiza a exibição dos cards
+        } else {
+            alert("Este card já existe!");
+        }
     }
 }
 
@@ -140,4 +150,19 @@ function displayCards() {
         cardDiv.onclick = () => openModal(card);
         container.appendChild(cardDiv);
     });
+}
+
+// Função para lidar com o upload da imagem
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imagePreview = document.getElementById('image-preview');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = e.target.result; // Define a imagem da pré-visualização
+            imagePreview.style.display = 'block'; // Exibe a pré-visualização
+        };
+        reader.readAsDataURL(file); // Lê o arquivo como URL de dados
+    }
 }
