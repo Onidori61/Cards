@@ -72,47 +72,54 @@
         }
 
         // Exibe os cards de diário
-        function displayCards() {
-            const container = document.getElementById('cards-container');
-            container.innerHTML = ''; // Limpa o container antes de adicionar novos cards
-            cardsData.forEach((card) => {
-                const cardDiv = document.createElement('div');
-                cardDiv.classList.add('card');
-                cardDiv.innerHTML = `
-                    <h2>${card.title}</h2>
-                `;
-                cardDiv.onclick = () => openModal(card);
-                container.appendChild(cardDiv);
-            });
-        }
+     function displayCards() { 
+     const container = document.getElementById('cards-container');
+     container.innerHTML = ''; // Limpa o container antes de adicionar novos cards
+     cardsData.forEach((card) => {
+        const cardDiv = document.createElement('div');
+        cardDiv.classList.add('card');
+        cardDiv.innerHTML = `
+            <h2>${card.title}</h2>
+            <p class="miss-fajardose-regular">${card.signature || ''}</p> <!-- Adiciona a assinatura com a classe, evitando undefined -->
+         `;
+         cardDiv.onclick = () => openModal(card); // Abre o modal com o card correspondente
+         container.appendChild(cardDiv);
+    });
+}
 
         // Função para adicionar um novo card ao diário
-        async function addNewCard() {
-            const title = prompt("Qual o título da sua entrada?");
-            const content = prompt("Escreva o conteúdo do diário:");
+async function addNewCard() {
+    const title = prompt("Qual o título da sua entrada?");
+    const content = prompt("Escreva o conteúdo do diário:");
+    const signature = prompt("Qual a sua assinatura?"); // Solicita a assinatura
 
-            if (title && content) {
-                const newCard = { title, content , createdAt: new Date() }; // Adiciona a data de criação
-                const existingCard = cardsData.find(card => card.title === title && card.content === content);
-                if (!existingCard) {
-                    const docRef = await addDoc(collection(db, "diaries"), newCard);
-                    newCard.id = docRef.id; // Armazena o ID do documento
-                    cardsData.push(newCard);
-                    displayCards(); // Atualiza a exibição dos cards
-                } else {
-                    alert("Este card já existe!");
-                }
-            }
+    // Verifica se todos os campos foram preenchidos
+    if (title && content && signature) {
+        const newCard = { title, content, signature, createdAt: new Date() }; // Inclui a assinatura
+        const existingCard = cardsData.find(card => card.title === title && card.content === content);
+        
+        if (!existingCard) {
+            const docRef = await addDoc(collection(db, "diaries"), newCard);
+            newCard.id = docRef.id; // Armazena o ID do documento
+            cardsData.push(newCard);
+            displayCards(); // Atualiza a exibição dos cards
+        } else {
+            alert("Este card já existe!");
         }
+    } else {
+        alert("Título, conteúdo e assinatura são obrigatórios!");
+    }
+}
 
-        // Função para abrir o modal
-        function openModal(card) {
-            document.getElementById('modal-title').textContent = card.title;
-            document.getElementById('modal-content').textContent = card.content;
-            document.getElementById('modal-delete-button').style.display = 'block'; // Exibe o botão de deletar
-            document.getElementById('modal-delete-button').onclick = () => deleteCard(card.id); // Define a ação do botão de deletar
-            document.getElementById('modal').style.display = 'flex';
-        }
+
+    // Função para abrir o modal
+function openModal(card) {
+    document.getElementById('modal-title').textContent = card.title; // Define o título no modal
+    document.getElementById('modal-content').textContent = card.content; // Define o conteúdo no modal
+    document.getElementById('modal-delete-button').style.display = 'block'; // Exibe o botão de deletar
+    document.getElementById('modal-delete-button').onclick = () => deleteCard(card.id); // Define a ação do botão de deletar
+    document.getElementById('modal').style.display = 'flex'; // Exibe o modal
+}
 
         // Função para fechar o modal
         function closeModal() {

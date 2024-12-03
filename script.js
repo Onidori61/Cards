@@ -57,13 +57,12 @@ function displayCards() {
 async function addNewCard() {
     const title = prompt("Qual o título da sua entrada?");
     const content = prompt("Escreva o conteúdo do diário:");
-    
-    // Adiciona a URL da imagem, se houver
-    const imageUrl = document.getElementById('modal-image').src; // Obtém a URL da imagem
+    const signature = prompt("Qual a sua assinatura?"); // Novo prompt para a assinatura
 
-    if (title && content) {
-        const newCard = { title, content, imageUrl, createdAt: new Date() }; // Inclui a URL da imagem
+    if (title && content && signature) {
+        const newCard = { title, content, signature, createdAt: new Date() }; // Adiciona a assinatura
         const existingCard = cardsData.find(card => card.title === title && card.content === content);
+        
         if (!existingCard) {
             const docRef = await addDoc(collection(db, "diaries"), newCard);
             newCard.id = docRef.id; // Armazena o ID do documento
@@ -72,6 +71,8 @@ async function addNewCard() {
         } else {
             alert("Este card já existe!");
         }
+    } else {
+        alert("Título, conteúdo e assinatura são obrigatórios!");
     }
 }
 
