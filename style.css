@@ -11,6 +11,10 @@
   box-sizing: border-box;
 }
 
+ * {
+     scrollbar-width: none;
+   } 
+
 body {
   font-family: 'Arial', sans-serif;
   background: linear-gradient(44deg, #000000, #18021a); /* Gradiente escuro de cinza */
