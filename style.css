@@ -27,6 +27,35 @@ body {
   height: 100vh;
 }
 
+.character-container {
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.character {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 10px; /* Ajuste conforme necessário */
+}
+
+#hello-kitty {
+    left: 0;
+}
+
+#pucca {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#garu {
+    right: 0;
+}
+
 .container {
   width: 95%;
   max-width: 1200px;
