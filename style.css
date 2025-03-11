@@ -40,7 +40,7 @@ body {
     width: 32px;
     height: 32px;
     position: absolute;
-    top: 10px; /* Ajuste conforme necessário */
+    top: -50px; /* Ajuste conforme necessário */
 }
 
 #hello-kitty {
@@ -48,7 +48,7 @@ body {
 }
 
 #pucca {
-    left: 50%;
+    left: 80%;
     transform: translateX(-50%);
 }
 
