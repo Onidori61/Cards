@@ -125,7 +125,7 @@ input[type="file"] {
   height: 250px; /* Altura fixa para os cards */
   margin-right: 20px; /* Espaçamento à direita entre os cards */
   scroll-snap-align: start; /* Alinha os cards ao início do contêiner ao rolar */
-  background: url(https://i.ibb.co/M5KR03YN/image.png); /* Cor de fundo escura para os cards */
+  background: url(https://i.ibb.co/ZpffS7nZ/image.jpg); /* Cor de fundo escura para os cards */
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   cursor: pointer;
